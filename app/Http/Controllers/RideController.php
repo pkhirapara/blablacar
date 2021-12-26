@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\CustomResponse;
 use App\Models\Ride;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,8 +12,14 @@ class RideController extends Controller
 {
     public function index()
     {
-
-        return Ride::all();
+        try {
+            return Ride::all();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code'    => $e->getCode(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
     }
 
@@ -29,9 +36,9 @@ class RideController extends Controller
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ]);
+                'message'           => $e->getMessage(),
+                'code'              => $e->getCode(),
+            ], CustomResponse::MY_CUSTOM_MESSAGE);
         }
     }
 
@@ -50,7 +57,7 @@ class RideController extends Controller
             return response()->json([
                 'message' => $e->getMessage(),
                 'code'    => $e->getCode(),
-            ]);
+            ], Response::HTTP_NO_CONTENT);
         }
 
         return ['success' => $success];
@@ -58,9 +65,14 @@ class RideController extends Controller
 
     public function destroy(Ride $ride): array
     {
-
-        $success = $ride->delete();
-
-        return ['success' => $success];
+        try {
+            $success = $ride->delete();
+            return ['success' => $success];
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code'    => $e->getCode(),
+            ], Response::HTTP_NO_CONTENT);
+        }
     }
 }

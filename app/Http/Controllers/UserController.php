@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         //HTTP_UNPROCESSABLE_ENTITY = when validation not pass
         try {
@@ -30,31 +31,22 @@ class UserController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        try {
-            /*request()->validate([
-                'name'     => 'required',
-                'mobile'   => 'required',
-                'email'    => 'required',
-                'password' => 'required',
-            ]);*/
 
-            return User::create([
-                'name'     => request('name'),
-                'mobile'   => request('mobile'),
-                'email'    => request('email'),
-                'password' => Hash::make(request('password')),
-            ]);
+        try {
+            $data = $request->validated();
+            return User::create($data);
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
                 'code'    => $e->getCode(),
-            ]);
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 
-    public function update(Request $request, User $user)
+    /*public function update(Request $request, User $user)
     {
 
         try {
@@ -68,17 +60,22 @@ class UserController extends Controller
             return response()->json([
                 'message' => $e->getMessage(),
                 'code'    => $e->getCode(),
-            ]);
+            ], Response::HTTP_NO_CONTENT);
         }
 
         return ['success' => $success];
-    }
+    }*/
 
     public function destroy(User $user): array
     {
-
-        $success = $user->delete();
-
-        return ['success' => $success];
+        try {
+            $success = $user->delete();
+            return ['success' => $success];
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code'    => $e->getCode(),
+            ], Response::HTTP_NO_CONTENT);
+        }
     }
 }
