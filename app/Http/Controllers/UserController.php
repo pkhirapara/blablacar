@@ -21,7 +21,10 @@ class UserController extends Controller
     {
         //HTTP_UNPROCESSABLE_ENTITY = when validation not pass
         try {
-            return User::all();
+            $users = User::all();
+
+            return view('pages.users.index', compact('users'));
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),

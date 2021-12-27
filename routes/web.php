@@ -5,7 +5,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /* Login */
-Route::view('/login', 'login');
+Route::view('/login', 'pages.login');
+Route::view('/signup', 'pages.signup');
 
 /* Users */
 Route::get('/users', [UserController::class, 'index']);
