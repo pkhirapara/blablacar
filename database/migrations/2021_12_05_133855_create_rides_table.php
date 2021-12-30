@@ -16,11 +16,11 @@ class CreateRidesTable extends Migration
         Schema::create('rides', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
 
             $table->string('starting_point');
             $table->string('destination_point');
-            $table->dateTime('time');
+            $table->string('time');
             $table->boolean('is_booked');
 
             $table->timestamps();

@@ -19,37 +19,29 @@ class UserController extends Controller
 {
     public function index()
     {
-        //HTTP_UNPROCESSABLE_ENTITY = when validation not pass
-        try {
-            $users = User::all();
+        $users = User::all();
 
-            return view('pages.users.index', compact('users'));
+        return view('pages.users.index', compact('users'));
+    }
 
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+    public function create()
+    {
 
+        return view('pages.users.create');
     }
 
     public function store(StoreUserRequest $request)
     {
 
-        try {
-            $data = $request->validated();
-            return User::create($data);
+        $data = $request->validated();
 
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ], Response::HTTP_BAD_REQUEST);
-        }
+        User::create($data);
+
+        return redirect('/users');
+
     }
 
-    /*public function update(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
 
         try {
@@ -67,7 +59,7 @@ class UserController extends Controller
         }
 
         return ['success' => $success];
-    }*/
+    }
 
     public function destroy(User $user): array
     {
