@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Route;
 Route::view('/login', 'pages.login');
 Route::view('/signup', 'pages.signup');
 
+Route::view('/dashboard', 'pages.dashboard');
+
+
 /* Users */
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/create', [UserController::class, 'create']);

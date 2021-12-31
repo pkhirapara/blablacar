@@ -1,11 +1,10 @@
-@extends('layouts.default')
+@extends('layouts.dashboard')
+@section('dashboard-title', 'Users list')
 
-@section('title', 'Users')
+@section('dashboard-content')
 
-@section('content')
 
     <div class="container">
-        <h2>Users</h2>
         <a href="/users/create">Add new user</a>
 
         <table class="table table-striped">
