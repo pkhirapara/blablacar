@@ -27,9 +27,26 @@ class StoreUserRequest extends FormRequest
         return [
             'name'     => 'required',
             'mobile'   => 'required',
-            'email'    => 'required',
+            'email'    => 'required|email',
             'password' => 'required',
         ];
 
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required'     => 'Please put your name here',
+            'email.required'    => 'Please put your email here',
+            'email.email'       => 'Please put valid format for email',
+            'mobile.required'   => 'Please put your phone number here',
+            'password.required' => 'Please put your current password here',
+        ];
+    }
+
 }

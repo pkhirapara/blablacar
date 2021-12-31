@@ -13,17 +13,9 @@ class RideController extends Controller
 {
     public function index()
     {
-        try {
-            $rides = Ride::all();
+        $rides = Ride::all();
 
-            return view('pages.rides.index', compact('rides'));
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        return view('pages.rides.index', compact('rides'));
 
     }
 
@@ -32,62 +24,37 @@ class RideController extends Controller
         return view('pages.rides.create');
     }
 
-    public function store()
+    public function store(StoreUserRequest $request)
     {
+        $data = $request->validated();
 
-        try {
+        Ride::create($data);
 
-            $data = request()->validate([
-                'user_id' => 'required',
-                'starting_point' => 'required',
-                'destination_point' => 'required',
-                'time' => 'required',
-                'is_booked' => 'required'
-            ]);
-
-            Ride::create($data);
-
-            return redirect('/rides');
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message'           => $e->getMessage(),
-                'code'              => $e->getCode(),
-            ]);
-        }
+        return redirect('/rides');
     }
 
-    public function update(Ride $ride): \Illuminate\Http\JsonResponse
-    {
-        try {
+    public function show(Ride $ride){
 
-            $success = $ride->update([
-                'user_id'           => request('user_id'),
-                'starting_point'    => request('starting_point'),
-                'destination_point' => request('destination_point'),
-                'time'              => request('time'),
-                'is_booked'         => request('is_booked'),
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ], Response::HTTP_NO_CONTENT);
-        }
-
-        return ['success' => $success];
+        return view('pages.rides.show', compact('ride'));
     }
 
-    public function destroy(Ride $ride): array
+    public function edit(Ride $ride){
+        return view('pages.rides.edit', compact('ride'));
+    }
+
+    public function update(Ride $ride, StoreUserRequest $request)
     {
-        try {
-            $success = $ride->delete();
-            return ['success' => $success];
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ], Response::HTTP_NO_CONTENT);
-        }
+        $data = $request->validated();
+
+        Ride::update($data);
+
+        return redirect('/rides');
+    }
+
+    public function destroy(Ride $ride)
+    {
+        $ride->delete();
+
+        return redirect('/rides');
     }
 }

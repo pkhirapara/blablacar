@@ -37,40 +37,35 @@ class UserController extends Controller
 
         User::create($data);
 
+        //return redirect('/users');
+
+    }
+
+    public function show(User $user){
+
+        //$user = User::findOrFail($userId);
+
+        return view('pages.users.show', compact('user'));
+    }
+
+    public function edit(User $user){
+
+        return view('pages.users.edit', compact('user'));
+    }
+
+    public function update(User $user, StoreUserRequest $request)
+    {
+        $data = $request->validated();
+
+        User::where('id', $user->id)->update($data);
+
+        //return redirect('/users');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
         return redirect('/users');
-
-    }
-
-    public function update(Request $request, User $user)
-    {
-
-        try {
-            $success = $user->update([
-                'name'     => request('name'),
-                'mobile'   => request('mobile'),
-                'email'    => request('email'),
-                'password' => request('password'),
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ], Response::HTTP_NO_CONTENT);
-        }
-
-        return ['success' => $success];
-    }
-
-    public function destroy(User $user): array
-    {
-        try {
-            $success = $user->delete();
-            return ['success' => $success];
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
-            ], Response::HTTP_NO_CONTENT);
-        }
     }
 }
