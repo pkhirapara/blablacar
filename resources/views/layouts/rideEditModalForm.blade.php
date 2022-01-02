@@ -3,23 +3,23 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Ride</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                @include('pages.users.edit')
+                @include('pages.rides.edit')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="editUserSubmit()">Save User</button>
+                <button type="button" class="btn btn-primary" onclick="editRideSubmit()">Save Ride</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    function editUserSubmit(event) {
+    function editRideSubmit(event) {
         alert('hello')
-        document.getElementById('edit-users').submit();
+        document.getElementById('edit-rides').submit();
     }
 </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -53,7 +54,7 @@ class UserController extends Controller
         return view('pages.users.edit', compact('user'));
     }
 
-    public function update(User $user, StoreUserRequest $request)
+    public function update(User $user, UpdateUserRequest $request)
     {
         $data = $request->validated();
 

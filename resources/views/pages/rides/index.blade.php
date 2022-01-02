@@ -1,12 +1,19 @@
-@extends('layouts.default')
+@extends('layouts.dashboard')
+@section('dashboard-title', 'Rides list')
 
-@section('title', 'Rides')
-
-@section('content')
+@section('dashboard-content')
 
     <div class="container">
-        <h2>Rides</h2>
-        <a href="/rides/create">Add new ride</a>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">@yield('dashboard-title')</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <a href="/rides/create">
+                        <button type="button" class="btn btn-success">Add new ride</button>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <table class="table table-striped">
             <thead>
@@ -17,7 +24,8 @@
                 <th scope="col">Destination Point</th>
                 <th scope="col">Time</th>
                 <th scope="col">Booked</th>
-                <th scope="col">Edit / Delete</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -25,19 +33,26 @@
                 <tr>
                     <td>{{ $ride->id }}</td>
                     <td>{{ $ride->user_id }}</td>
-                    <td>{{ $ride->starting_point }}</td>
+                    <td><a href="/rides/{{ $ride->id }}">{{ $ride->starting_point }}</a></td>
                     <td>{{ $ride->destination_point }}</td>
                     <td>{{ $ride->time }}</td>
                     <td>{{ $ride->is_booked ? "Yes" : "No" }}</td>
                     <td>
-                        <a href="/users/{{ $ride->id }}/edit"><button type="button" class="btn btn-warning">Edit</button></a>
-
-                        <form action="/users/{{ $ride->id }}" method="post">
-                            @method('DELETE')
-
-                            <button type="button" class="btn btn-danger">Delete</button>
-                            @csrf
-                        </form>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <form action="/rides/{{ $ride->id }}" method="post">
+                                @method('DELETE')
+                                <button class="btn btn-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                                @csrf
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @endforeach
@@ -45,6 +60,8 @@
             </tbody>
         </table>
     </div>
+
+    @include('layouts.rideEditModalForm')
 
 @endsection
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\CustomResponse;
+use App\Http\Requests\StoreRideRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateRideRequest;
 use App\Models\Ride;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,7 +26,7 @@ class RideController extends Controller
         return view('pages.rides.create');
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(StoreRideRequest $request)
     {
         $data = $request->validated();
 
@@ -42,7 +44,7 @@ class RideController extends Controller
         return view('pages.rides.edit', compact('ride'));
     }
 
-    public function update(Ride $ride, StoreUserRequest $request)
+    public function update(Ride $ride, UpdateRideRequest $request)
     {
         $data = $request->validated();
 

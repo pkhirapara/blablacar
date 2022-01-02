@@ -3,9 +3,17 @@
 
 @section('dashboard-content')
 
-
     <div class="container">
-        <a href="/users/create">Add new user</a>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">@yield('dashboard-title')</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <a href="/users/create">
+                        <button type="button" class="btn btn-success">Add new user</button>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <table class="table table-striped">
             <thead>
@@ -28,17 +36,20 @@
                     <td>{{ $user->mobile }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Edit
-                        </button>
+                        <a href="/users/{{ $user->id }}/edit">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="far fa-edit"></i>
+                            </button>
+                        </a>
                     </td>
                     <td>
                         <div class="row">
                             <form action="/users/{{ $user->id }}" method="post">
                                 @method('DELETE')
-
-                                <button type="button" class="btn-sm btn-danger">Delete</button>
+                                <button class="btn-sm btn-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
                                 @csrf
                             </form>
                         </div>
@@ -50,7 +61,7 @@
         </table>
     </div>
 
-    @include('layouts.testModal')
+    @include('layouts.userEditModalForm')
 
 @endsection
 
